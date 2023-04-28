@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 194368901}
   - component: {fileID: 194368900}
   - component: {fileID: 194368899}
+  - component: {fileID: 194368902}
   m_Layer: 5
   m_Name: Button (Legacy)
   m_TagString: Untagged
@@ -206,7 +207,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 194368900}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 194368902}
+        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+        m_MethodName: Load
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Main
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &194368900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,6 +258,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 194368897}
   m_CullTransparentMesh: 1
+--- !u!114 &194368902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 194368897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84d932c6f17674de28cf42eac234e6ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &228272500
 GameObject:
   m_ObjectHideFlags: 0
@@ -660,7 +685,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: Back
 --- !u!222 &1645565631
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -681,6 +706,7 @@ GameObject:
   - component: {fileID: 1926080935}
   - component: {fileID: 1926080934}
   - component: {fileID: 1926080933}
+  - component: {fileID: 1926080937}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -770,3 +796,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1926080937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926080932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49d5f483e985844c7b5f812a2f9d1cb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  capsuleRotationSpeed: 4
+  sphereMagnitudeX: 2
+  sphereMagnitudeY: 3
+  sphereFrequency: 1
