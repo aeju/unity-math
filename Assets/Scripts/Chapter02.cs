@@ -75,17 +75,21 @@ public class Chapter02 : MonoBehaviour {
 		
 		public SphericalCoordinates(){}
 		
-		// 직교좌표의 수치를 인수로 받아, 구면좌표의 초깃값으로 설정
+		// 직교좌표의 수치를 인수로 받아, 구면좌표의 초깃값으로 설정 (직교좌표 -> 구면좌표 변환)
 		public SphericalCoordinates(Vector3 cartesianCoordinate)
 		{
+			// azimuth, elevation : 도수 -> 라디안으로 변환
 			_minAzimuth = Mathf.Deg2Rad * minAzimuth;
 			_maxAzimuth = Mathf.Deg2Rad * maxAzimuth;
 
 			_minElevation = Mathf.Deg2Rad * minElevation;
 			_maxElevation = Mathf.Deg2Rad * maxElevation;
 
+			// Vector3.magnitude : 직교좌표의 원점으로부터의 거리(카메라 자신과 원점의 거리)
 			radius = cartesianCoordinate.magnitude;
+			// azimuth : 아크탄젠트로 구할 수 있음 (직교좌표축의 x좌표 = 밑변, z좌표 = 높이 -> 두 변이 이루는 직각삼각형의 내각)
 			azimuth = Mathf.Atan2(cartesianCoordinate.z, cartesianCoordinate.x);
+			// elevation : 아크사인(y좌표 = 높이, 반지름 r = 빗변 -> 직각삼각형의 내각)
 			elevation = Mathf.Asin(cartesianCoordinate.y / radius);
 		}
 		
