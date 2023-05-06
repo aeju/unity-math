@@ -6,23 +6,35 @@ using UnityEngine.EventSystems;
 // Based on the code at http://wiki.unity3d.com/index.php/SphericalCoordinates with minor refactoring changes.
 // This code is under Creative Commons Attribution Share Alike http://creativecommons.org/licenses/by-sa/3.0/
 
+
+// 원점상의 구면좌표계 위를, 촬영 대상을 계속 보면서 이동하는 카메라
+// 키보드 좌우키, 좌우 드래그 -> 카메라 좌우로 이동
+// 키보드 상하키, 상하 드래그 -> 카메라 상하로 이동
+// 마우스 휠 앞으로 -> 물체에 가까이 / 휠 뒤로 -> 물체에서 멀어짐
 public class Chapter02 : MonoBehaviour {
 
 	public float rotateSpeed = 1f;
 	public float scrollSpeed = 200f;
 
+	// 정육면체 : 메인 카메라가 보는 대상
 	public Transform pivot;
-
-	[System.Serializable]
+	
+	// (중첩 클래스) SphericalCoordinates : 직교좌표와 구면좌표의 변환을 담당
+	[System.Serializable] // 인스펙터 창에서 프로퍼티 값 설정 가능하도록
 	public class SphericalCoordinates
 	{
+		// 구면좌표 : P( r , ϕ , θ )
+		
+		// azimuth(방위각) : 좌우키로 회전할 수 있는 방향의 이동량 <- 라디안
+		// 카메라가 바라보는 대상이 놓여있다고 간주하는 x축과 z축으로 이루어진 평면으로부터 카메라가 얼마나 위쪽(y축 방향)으로 움직이는지 
 		public float _radius, _azimuth, _elevation;
-
+		
 		public float radius
 		{ 
 			get { return _radius; }
 			private set
 			{
+				// Mathf.Clamp(v, min, max) : 최솟값 ~ 최댓값 넘지 않도록
 				_radius = Mathf.Clamp( value, _minRadius, _maxRadius );
 			}
 		}
@@ -32,6 +44,7 @@ public class Chapter02 : MonoBehaviour {
 			get { return _azimuth; }
 			private set
 			{ 
+				// Mathf.Repeat(0, max) : 0 ~ 최댓값(식 : 최댓값-최솟값) 넘지 않도록
 				_azimuth = Mathf.Repeat( value, _maxAzimuth - _minAzimuth ); 
 			}
 		}
@@ -40,7 +53,7 @@ public class Chapter02 : MonoBehaviour {
 		{ 
 			get{ return _elevation; }
 			private set
-			{ 
+			{
 				_elevation = Mathf.Clamp( value, _minElevation, _maxElevation ); 
 			}
 		}
@@ -62,6 +75,7 @@ public class Chapter02 : MonoBehaviour {
 		
 		public SphericalCoordinates(){}
 		
+		// 직교좌표의 수치를 인수로 받아, 구면좌표의 초깃값으로 설정
 		public SphericalCoordinates(Vector3 cartesianCoordinate)
 		{
 			_minAzimuth = Mathf.Deg2Rad * minAzimuth;
