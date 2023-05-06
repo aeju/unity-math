@@ -93,11 +93,15 @@ public class Chapter02 : MonoBehaviour {
 			elevation = Mathf.Asin(cartesianCoordinate.y / radius);
 		}
 		
+		// 구면좌표 -> 직교좌표 변환
 		public Vector3 toCartesian
 		{
 			get
 			{
+				// 구면의 반지름 radius : 빗변, 구면좌표의 elevation : 내각
+				// 카메라 위치에서 x축 xz축의 평면을 향해 수직으로 그은 선과 x축 z축의 평면이 접하는 위치부터 원점까지의 거리 t
 				float t = radius * Mathf.Cos(elevation);
+				// t : azimuth를 내각으로 하는 직각삼각형의 빗변 길이 -> x좌표 : *cos / z좌표(높이) : * sin
 				return new Vector3(t * Mathf.Cos(azimuth), radius * Mathf.Sin(elevation), t * Mathf.Sin(azimuth));
 			}
 		}
@@ -125,6 +129,7 @@ public class Chapter02 : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		float kh, kv, mh, mv, h, v;
+		// 키보드 입력 
 		kh = Input.GetAxis( "Horizontal" );
 		kv = Input.GetAxis( "Vertical" );
 		
@@ -135,16 +140,26 @@ public class Chapter02 : MonoBehaviour {
 		h = kh * kh > mh * mh ? kh : mh;
 		v = kv * kv > mv * mv ? kv : mv;
 		
+		// 입력량 검출 -> SphericalCoordinates 클래스 - Rotate 메서드 호출 -> 카메라를 구면좌표 상에서 이동
 		if (h * h > Mathf.Epsilon || v * v > Mathf.Epsilon) {
 			transform.position
 				= sphericalCoordinates.Rotate(h * rotateSpeed * Time.deltaTime, v * rotateSpeed * Time.deltaTime).toCartesian + pivot.position;
 		}
 
+		// 마우스 휠 입력이 있으면
+		// TranslateRadius 메서드 -> 구면좌표계의 반지름 크기를 변화 
 		float sw = -Input.GetAxis("Mouse ScrollWheel");
+		// Mathf.Epsilon : 0에 가까운 소수점 반환
+		// 수치를 제곱한 다음 비교하는 까닭 : 수치의 절댓값이 0이 아님을 확인하기 위해서
+		// float형 : 32비트 부동소수점 -> 그대로 ==로 0과 비교 -> 오차가 버려져서, 제대로 비교 x
+		// 입력양이 0이 아니고, 입력으로서 의미가 있는 양인지 판단하고자 제곱 후 비교 
+		// ( + float형끼리 비교할 경우 : == 연산자 x, Mathf.Approximately(모호한 비교)
 		if (sw * sw > Mathf.Epsilon) {
 			transform.position = sphericalCoordinates.TranslateRadius(sw * Time.deltaTime * scrollSpeed).toCartesian + pivot.position;
 		}
 
+		// pivot으로 설정한 게임 오브젝트 쪽으로 메인 카메라의 방향 돌리기 (항상 pivot을 보도록)
+		// LookAt() : 3D 공간에서의 회전
 		transform.LookAt(pivot.position);
 	}
 }
