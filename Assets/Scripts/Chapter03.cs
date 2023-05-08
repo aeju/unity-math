@@ -7,6 +7,9 @@ using UnityEngine.EventSystems;
 // Based on the code at http://wiki.unity3d.com/index.php/SphericalCoordinates
 // This code is under Creative Commons Attribution Share Alike http://creativecommons.org/licenses/by-sa/3.0/
 
+// 간이 충돌 판정 (<- 벡터의 외적, 내적 성질을 사용해서)
+// 점 P, 삼각형 ABC 내부에 있는 경우 : 외적(각각의 변과 각 정점에서 점 P로 향한 직선과의 법선벡터) -> 모든 법선벡터는 같은 방향을 향한다
+// 점 P, 삼각형 ABC 외부에 있는 경우 : 외적으로써 얻어지는 법선벡터의 방향이 반전
 public class Chapter03 : MonoBehaviour {
 
 	public float rotateSpeed = 1f;
@@ -100,6 +103,7 @@ public class Chapter03 : MonoBehaviour {
 	public SphericalCoordinates sphericalCoordinates;
 
 	// Chapter02와 다른 내용
+	// triangleVertices : Vector3의 리스트 (큐브 안의 정점 좌표를 세 개 넣어 충돌 판정의 대상으로 삼는 삼각형으로 다루기)
 	private List<Vector3> triangleVertices = new List<Vector3>();
 
 	// Use this for initialization
@@ -107,9 +111,12 @@ public class Chapter03 : MonoBehaviour {
 		sphericalCoordinates = new SphericalCoordinates(transform.position);
 		transform.position = sphericalCoordinates.toCartesian + pivot.position;
 
+		// 큐브에 있는 MeshFilter 컴포넌트를 GetComponent 메서드로 가져와서, mesh 프로퍼티에 있는 Mesh 클래스의 오브젝트의 메시 정보에 직접 액세스
+		// Mesh 클래스 : vertices 프로퍼티로서 폴리곤 메시의 정점 좌표 배열을 가짐
 		Mesh mesh = pivot.gameObject.GetComponent<MeshFilter>().mesh;
 		for (int i = 0; i < mesh.vertices.Length; i++)
 		{
+			// 처음 3개를 뽑아 triangleVertices에 넣는다
 			if (triangleVertices.Count < 3) {
 				triangleVertices.Add(mesh.vertices[i]);
 			}
