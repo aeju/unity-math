@@ -7,9 +7,10 @@ using UnityEngine.EventSystems;
 // Based on the code at http://wiki.unity3d.com/index.php/SphericalCoordinates
 // This code is under Creative Commons Attribution Share Alike http://creativecommons.org/licenses/by-sa/3.0/
 
-// 간이 충돌 판정 (<- 벡터의 외적, 내적 성질을 사용해서)
+// 간이 충돌 판정 (<- 벡터의 외적, 내적 성질을 사용)
 // 점 P, 삼각형 ABC 내부에 있는 경우 : 외적(각각의 변과 각 정점에서 점 P로 향한 직선과의 법선벡터) -> 모든 법선벡터는 같은 방향을 향한다
 // 점 P, 삼각형 ABC 외부에 있는 경우 : 외적으로써 얻어지는 법선벡터의 방향이 반전
+// "벡터의 내적, 외적 -> 점, 직선, 평면의 위치 관계를 많은 계산비용을 들이지 않고도 확인할 수 있다"
 public class Chapter03 : MonoBehaviour {
 
 	public float rotateSpeed = 1f;
@@ -151,11 +152,17 @@ public class Chapter03 : MonoBehaviour {
 		transform.LookAt(pivot.position);
 	}
 
+	// 선, 충돌 판정 역할
 	void DrawCameraLine() {
+		// 큐브 z축 방향으로 파란 선 긋기
+		// transform.forward : 월드 좌표상에서 z축 방향 벡터
 		Debug.DrawLine(pivot.position, pivot.transform.forward * 2, Color.blue);
 		
+		// 카메라에서 나온 선 끝 좌표
 		Vector3 cameraPoint = transform.position + transform.forward * 5;
 		
+		// triangleVertices에 들어간 세 개의 정점 좌표
+		// -> 삼각형의 각 변에 해당하는 벡터 구하기
 		Vector3 edge1 = triangleVertices [1] - triangleVertices [0];
 		Vector3 edge2 = cameraPoint - triangleVertices [1];
 		
@@ -165,10 +172,16 @@ public class Chapter03 : MonoBehaviour {
 		Vector3 edge5 = triangleVertices [0] - triangleVertices [2];
 		Vector3 edge6 = cameraPoint - triangleVertices [0];
 		
+		// 양쪽 벡터의 외적 : Vector3.Cross() -> 3정점만큼 구하기
+		// cf. Vector3.Cross() : 두 벡터의 외적
 		Vector3 cp1 = Vector3.Cross (edge1, edge2);
 		Vector3 cp2 = Vector3.Cross (edge3, edge4);
 		Vector3 cp3 = Vector3.Cross (edge5, edge6);
 
+		// cp1과 cp2, cp3와의 내적 구해서 부호 확인
+		// 내적 = 양수 : 법선벡터가 반대 방향이 아니라는 뜻
+		// 다른 법선벡터 양쪽과 반대방향 x = 모든 정점의 법선벡터가 같은 방향을 향함
+		// => 카메라에서 나온 선의 끝이 triangleVertices에 설정한 삼각형 위에 있음
 		if (Vector3.Dot (cp1, cp2) > 0 && Vector3.Dot (cp1, cp3) > 0) {
 			Debug.DrawLine (transform.position, cameraPoint, Color.red);
 		} else {
