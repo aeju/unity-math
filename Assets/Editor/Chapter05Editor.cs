@@ -163,7 +163,7 @@ public class Chapter05Editor : Editor {
 			projectionMatrix = pm;
 		}
 
-		// Camera.main.projectionMatrix() : 카메라의 프로젝션 변환 행렬을 가져ㅇ
+		// Camera.main.projectionMatrix() : 카메라의 프로젝션 변환 행렬을 가져옴
 		if ( GUILayout.Button("GL.GetGPUProjectionMatrix" ) ) {
 			projectionMatrix = GL.GetGPUProjectionMatrix(Camera.main.projectionMatrix, true);
 		}
