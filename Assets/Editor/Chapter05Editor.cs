@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 using UnityEditor;
 
+// 5. 행렬에 의한 아핀 변환과 프로젝션 변환
+// 행렬 내용 -> 실제 씬 내 오브젝트의 좌표 변환으로 적용 
 [CustomEditor( typeof(Chapter05) )]
 public class Chapter05Editor : Editor {
 
@@ -18,6 +20,9 @@ public class Chapter05Editor : Editor {
 	Vector3 rotation;
 	Vector3 scale = Vector3.one;
 
+	// mf : 3D 모델의 정점 정보를 나타내는 MeshFilter
+	// origVects, newVecrts : 실제 정점 정보를 저장하는 배열 
+	
 	private MeshFilter mf;
 	private Vector3[] origVerts;
 	private Vector3[] newVerts;
