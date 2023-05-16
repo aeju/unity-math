@@ -52,6 +52,11 @@ public class Chapter05Editor : Editor {
 			matrix = Matrix4x4.identity;
 		}
 
+		// Apply 버튼을 누르면,
+		// matrix 변수에 들어있는 행렬을 좌표 변환으로서 origVerts에 있는 정점군에 차례로 적용해 새로운 정점군을 생성하고, 원래의 폴리곤 메시에 저장
+		// mf는 Cube로부터 GetComponent를 이용해 가져온다 
+		// MeshFilter : mesh 프로퍼티가 있고, 그 프로퍼티의 vertices 안에 가공하지 않은 정점 정보가 들어 있음
+		// Matrix4x4.MultiplyPoint3x4() : 프로젝션 변환에는 사용x, 아핀 변환에는 충분한 곱셈
 		if ( GUILayout.Button("Apply" ) ) {
 			mf = obj.cube.GetComponent<MeshFilter>();
 			origVerts = mf.mesh.vertices;
@@ -80,7 +85,7 @@ public class Chapter05Editor : Editor {
 		EditorGUILayout.Space();
 
 		EditorGUILayout.BeginVertical( GUI.skin.box );
-
+		
 		translation = EditorGUILayout.Vector3Field( "Translation", translation);
 
 		if ( GUILayout.Button("Apply" ) ) {
