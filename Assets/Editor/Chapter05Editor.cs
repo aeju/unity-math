@@ -143,6 +143,7 @@ public class Chapter05Editor : Editor {
 		projectionMatrix.SetRow(2, RowVector4Field(projectionMatrix.GetRow(2)));
 		projectionMatrix.SetRow(3, RowVector4Field(projectionMatrix.GetRow(3)));
 
+		// 회전, 스케일에도 마찬가지로 다른 두개의 아핀 변환에 아무것도 하지 않는 변환을 설정
 		if ( GUILayout.Button("Camera.main.projectionMatrix" ) ) {
 			bool dx = SystemInfo.graphicsDeviceType.ToString().IndexOf("Direct3D") > -1;
 			Debug.Log(SystemInfo.graphicsDeviceType.ToString());
@@ -162,6 +163,7 @@ public class Chapter05Editor : Editor {
 			projectionMatrix = pm;
 		}
 
+		// Camera.main.projectionMatrix() : 카메라의 프로젝션 변환 행렬을 가져ㅇ
 		if ( GUILayout.Button("GL.GetGPUProjectionMatrix" ) ) {
 			projectionMatrix = GL.GetGPUProjectionMatrix(Camera.main.projectionMatrix, true);
 		}
