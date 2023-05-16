@@ -85,7 +85,13 @@ public class Chapter05Editor : Editor {
 		EditorGUILayout.Space();
 
 		EditorGUILayout.BeginVertical( GUI.skin.box );
-		
+
+		// 평행이동 행렬 : Matrix4x4.SetTRS()
+		// SetTRS() : 이름 그대로 평행이동(T), 회전(R), 스케일(S)의 각 좌표 변환 행렬을 한 번에 Matrix4x4에 설정하는 메서드
+		// -> 여기서는 평행이동만 원하므로 회전, 스케일에는 무변환에 해당하는 값을 지정 
+		// Quaternion.identity : 무회전 상태
+		// Vector3.one : 1배의 스케일 (= 1, 1, 1)
+		// 작성한 행렬 m은 왼쪽부터 matrix에 곱하여 합성
 		translation = EditorGUILayout.Vector3Field( "Translation", translation);
 
 		if ( GUILayout.Button("Apply" ) ) {
