@@ -46,6 +46,8 @@ public class Chapter06 : MonoBehaviour {
 		transform.rotation = Quaternion.Slerp(transform.rotation, cameraRotation, Time.deltaTime);
 		transform.Translate(0.02f, 0.005f, 0.5f * Time.deltaTime);
 
+		// 키 입력이 있으면 ResetCubeRotation으로 대응하는 회전축 설정, rotation -> true로 하여 큐브에 회전을 적용해간다
+		// cubeRotationFrom : 회전 전 / cubeRotationTo : 회전 후
 		if (rotating)	{
 			cubeRotationTime += Time.deltaTime / 0.5f;
 			cube.transform.rotation = Quaternion.Slerp(cubeRotationFrom, cubeRotationTo, cubeRotationTime);
@@ -82,6 +84,7 @@ public class Chapter06 : MonoBehaviour {
 		}
 	}
 
+	// cubeRotationFrom(회전 전), cubeRotationTo(회전 후) 설정
 	void ResetCubeRotation (Vector3 axis) {
 		spinning = false;
 		cubeRotationFrom = cube.transform.rotation;
